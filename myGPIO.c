@@ -7,10 +7,6 @@
 
 // For the code you place here, you may use your code that uses register references.
 // However, I encourage you to start using the Driver Library as soon as possible.
-#define PRESSED 0X00
-
-#define UNPRESSED 0X01
-
 #define Left_LED BIT0
 
 #define Launchpad_S1 BIT1            // P1.1

@@ -17,7 +17,10 @@ int main(void)
     unsigned int count1 = 0;
 
     // TODO: Declare the variables that main uses to interact with your state machine.
-
+    typedef enum {Stable_0, Tran_0to1, Stable_1, Tran_1to0} debounce_state_t;
+    static debounce_state_t S = Stable_0;
+    char NowbuttonStatus=checkStatus_BoosterpackS1();
+    bool pressed=false;
 
     // Stops the Watchdog timer.
     initBoard();
@@ -77,13 +80,14 @@ void initBoard()
 // TODO: Map the value of a count variable to a color for LED2.
 // Since count is an unsigned integer, you can mask the value in some way.
 void changeLaunchpadLED2(unsigned int count)
-{   int a;
+{   //get the last three bits of the count number
+    int a;
     int b;
     int c;
     a=getBit(count,0);
     b=getBit(count,1);
     c=getBit(count,2);
-
+ //assigned LEDs based on the last three bit of the count
     if(a=0,b=0,c=0)
     {
         turnOn_LaunchpadLED2Red();
@@ -186,11 +190,11 @@ void changeBoosterpackLED(unsigned int count)
 // TODO: Create a button state machine.
 // The button state machine should return true or false to indicate a completed, debounced button press.
 bool fsmBoosterpackButtonS1(unsigned int buttonhistory)
-{   typedef enum {Stable_0, Tran_0to1, Stable_1, Tran_1to0} debounce_state_t;
+{   typedef enum {Stable_0, Tran_0to1, Stable_1, Tran_1to0} debounce_state_t;//Define different switch cases.
     static debounce_state_t S = Stable_0;
     char NowbuttonStatus=checkStatus_BoosterpackS1();
     bool pressed = false;
-
+//assign different situation in different switch cases.
     switch(S)
     {
     case Stable_0:
@@ -235,7 +239,7 @@ bool fsmBoosterpackButtonS1(unsigned int buttonhistory)
 
     return pressed;
 }
-
+//function to get specific bits from number.
 unsigned int getBit(unsigned int number, unsigned int i)
 {
     int value=0;
