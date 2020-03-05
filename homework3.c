@@ -2,6 +2,13 @@
 #include "homework3.h"
 #include "myGPIO.h"
 #include "myTimer.h"
+#include <stdio.h>
+
+
+#define PRESSED 0
+#define RELEASED 1
+
+unsigned int getBit(unsigned int number, unsigned int i)
 
 int main(void)
 {
@@ -41,15 +48,22 @@ int main(void)
         // TODO: If Timer1 has expired, update the button history from the pushbutton value.
         // YOU MUST WRITE timer1expired IN myTimer.c
 
-
+        if(timer0Expired())
+        {
+            count0++;
+        }
 
         // TODO: Call the button state machine function to check for a completed, debounced button press.
         // YOU MUST WRITE THIS FUNCTION BELOW.
 
-
+        bool fsmBoosterpackButtonS1(unsigned int buttonhistory)
 
         // TODO: If a completed, debounced button press has occurred, increment count1.
 
+        if(pressed=true)
+        {
+            count1++;
+        }
 
 
     }
@@ -63,23 +77,178 @@ void initBoard()
 // TODO: Map the value of a count variable to a color for LED2.
 // Since count is an unsigned integer, you can mask the value in some way.
 void changeLaunchpadLED2(unsigned int count)
-{
+{   int a;
+    int b;
+    int c;
+    a=getBit(count,0);
+    b=getBit(count,1);
+    c=getBit(count,2);
 
+    if(a=0,b=0,c=0)
+    {
+        turnOn_LaunchpadLED2Red();
+        turnOff_LaunchpadLED2Green();
+        turnOff_LaunchpadLED2Blue();
+    }
+    if(a=1,b=0,c=0)
+    {
+        turnOn_LaunchpadLED2Red();
+        turnOn_LaunchpadLED2Green();
+        turnOff_LaunchpadLED2Blue();
+    }
+    if(a=0,b=1,c=0)
+    {
+        turnOff_LaunchpadLED2Red();
+        turnOn_LaunchpadLED2Green();
+        turnOff_LaunchpadLED2Blue();
+    }
+    if(a=1,b=1,c=0)
+    {
+        turnOff_LaunchpadLED2Red();
+        turnOn_LaunchpadLED2Green();
+        turnOn_LaunchpadLED2Blue();
+    }
+    if(a=0,b=0,c=1)
+    {
+        turnOff_LaunchpadLED2Red();
+        turnOff_LaunchpadLED2Green();
+        turnOn_LaunchpadLED2Blue();
+    }
+    if(a=1,b=0,c=1)
+    {
+        turnOn_LaunchpadLED2Red();
+        turnOn_LaunchpadLED2Green();
+        turnOn_LaunchpadLED2Blue();
+    }
+    if(a=1,b=1,c=1)
+    {
+        turnOff_LaunchpadLED2Red();
+        turnOff_LaunchpadLED2Green();
+        turnOff_LaunchpadLED2Blue();
+    }
 }
 
 // TODO: Maybe the value of a count variable to a color for the Boosterpack LED
 // This is essentially a copy of the previous function, using a different LED
 void changeBoosterpackLED(unsigned int count)
 {
+    int a;
+        int b;
+        int c;
+        a=getBit(count,0);
+        b=getBit(count,1);
+        c=getBit(count,2);
 
+        if(a=0,b=0,c=0)
+        {
+            turnOn_BoosterpackLEDRed();
+            turnOff_BoosterpackLEDGreen();
+            turnOff_BoosterpackLEDBlue();
+        }
+        if(a=1,b=0,c=0)
+        {
+            turnOn_BoosterpackLEDRed();
+            turnOn_BoosterpackLEDGreen();
+            turnOff_BoosterpackLEDBlue();
+        }
+        if(a=0,b=1,c=0)
+        {
+            turnOff_BoosterpackLEDRed();
+            turnOn_BoosterpackLEDGreen();
+            turnOff_BoosterpackLEDBlue();
+        }
+        if(a=1,b=1,c=0)
+        {
+            turnOff_BoosterpackLEDRed();
+            turnOn_BoosterpackLEDGreen();
+            turnOn_BoosterpackLEDBlue();
+        }
+        if(a=0,b=0,c=1)
+        {
+            turnOff_BoosterpackLEDRed();
+            turnOff_BoosterpackLEDGreen();
+            turnOn_BoosterpackLEDBlue();
+        }
+        if(a=1,b=0,c=1)
+        {
+            turnOn_BoosterpackLEDRed();
+            turnOn_BoosterpackLEDGreen();
+            turnOn_BoosterpackLEDBlue();
+        }
+        if(a=1,b=1,c=1)
+        {
+            turnOff_BoosterpackLEDRed();
+            turnOff_BoosterpackLEDGreen();
+            turnOff_BoosterpackLEDBlue();
+        }
 }
 
 // TODO: Create a button state machine.
 // The button state machine should return true or false to indicate a completed, debounced button press.
 bool fsmBoosterpackButtonS1(unsigned int buttonhistory)
-{
+{   typedef enum {Stable_0, Tran_0to1, Stable_1, Tran_1to0} debounce_state_t;
+    static debounce_state_t S = Stable_0;
+    char NowbuttonStatus=checkStatus_BoosterpackS1();
     bool pressed = false;
+
+    switch(S)
+    {
+    case Stable_0:
+        pressed=false;
+        if(NowbuttonStatus = PRESSED)
+        {
+            S=Tran_0to1;
+        }
+        break;
+    case Tran_0to1:
+        pressed=false;
+        if(NowbuttonStatus = PRESSED)
+        {
+            S=Stable_1;
+        }
+        else if(timer1Expired(void))
+        {
+            S=Stable_0;
+        }
+        break;
+    case Stable_0:
+        pressed=true;
+        if(NowbuttonStatus != PRESSED)
+        {
+            S=Tran_1to0;
+        }
+        break;
+    case Tran_0to1:
+        pressed=false;
+        if(NowbuttonStatus != PRESSED)
+        {
+            S=Stable_0;
+        }
+        else if(timer1Expired(void))
+        {
+            S=Stable_1;
+        }
+        break;
+    }
+
 
 
     return pressed;
 }
+
+unsigned int getBit(unsigned int number, unsigned int i)
+{
+    int value=0;
+    int change=number | (1<<i);
+    if (number==change)
+    {
+        value=1;
+    }
+    else
+    {
+    value=0;
+    }
+    return value;
+}
+
+

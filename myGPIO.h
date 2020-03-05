@@ -9,6 +9,31 @@
 #ifndef MYGPIO_H_
 #define MYGPIO_H_
 
+#define PRESSED 0
+#define RELEASED 1
+
+#define Left_LED BIT0
+
+#define Launchpad_S1 BIT1            // P1.1
+#define Launchpad_S2 BIT4       //P1.4
+
+//bitmask for the 3 LED light for the LED on the right
+#define RGBLED_Launchpad_RED BIT0   //P2.0
+#define RGBLED_Launchpad_GREEN BIT1 //P2.1
+#define RGBLED_Launchpad_BLUE BIT2  //P2.2
+
+//define the two button on the booster pack
+#define Boosterpad_S1 BIT1             //J4.33 P5.1
+#define Boosterpad_S2 BIT5             //J4.32 P3.5
+
+//define the three LED on the booster pack
+#define RGBLED_Boosterpad_BLUE BIT6 //J4.37 P5.6
+#define RGBLED_Boosterpad_GREEN BIT4    //J4.38 P2.4
+#define RGBLED_Boosterpad_RED BIT6  //J4.39 P2.6
+
+
+
+
 // This function initializes the peripherals used in the program.
 void initGPIO();
 // This function returns the value of Launchpad S1.
